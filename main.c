@@ -3,17 +3,31 @@
 
 #include "arbrebinaire.h"
 
-int main(void){
-	arbre tree = ArbreVide();
-	int vide = EstArbreVide(tree);
-	if (vide){
-		printf("L'arbre est vide\n");
-	} else {
-		printf("L'arbre n'est pas vide\n");
+int main(int argc, char **argv){
+	if(argc!=3) {
+		printf("Erreur: Il manque un ou des argument(s) \n");
+		exit(EXIT_FAILURE);
 	}
-	arbre droit = Construire(1,ArbreVide(),ArbreVide());
-	arbre gauche = Construire(5,ArbreVide(),ArbreVide());
-	tree = Construire(7,gauche,droit);
+	char *filename = argv[1];
+	FILE *f;
+	f = fopen(filename,"r");
+	if(f==NULL) {
+		printf("Impossible d'ouvrir le fichier\n");
+		exit(EXIT_FAILURE);
+	}
+	size_t sizefile;
+	fseek(f,0,SEEK_END);
+	sizefile = ftell(f)+1;
+	fseek(f,0,SEEK_SET);
+
+	arbre tree = ArbreVide();
+	for(size_t line = 0; line < sizefile; line++) {
+		int element;
+		fscanf(f, "%d", &element);
+		tree = Insertion(element,tree);
+	}
+
+	//Parcours
 	printf("Pref : \n");
 	ParcoursPref(tree);
 	printf("\n");
@@ -23,16 +37,18 @@ int main(void){
 	printf("Suff : \n");
 	ParcoursSuff(tree);
 	printf("\n");
-	/*-----------------------------------------*/
-	arbre newtree = ArbreVide();
-        newtree = Insertion(8,newtree);
-	newtree = Insertion(10,newtree);
-	newtree = Insertion(6,newtree);
-	newtree = Insertion(12,newtree);
-	newtree = Insertion(9,newtree);
-	printf("==========NewTree======\n");
-	ParcoursSuff(newtree);
+	printf("Larg : \n");
+	ParcoursLarg(tree);
 	printf("\n");
+	
+	//Recherche d'un element dans l'arbre
+	
+	char *a = argv[2];
+	int n = atoi(a);
+	if(Recherche(n,tree)){
+		printf("Element %d dans l'arbre = VRAI\n", n);
+	} else {
+		printf("Element %d dans l'arbre = FALSE\n", n);
+	}
+
 }
-
-
