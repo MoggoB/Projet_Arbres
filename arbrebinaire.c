@@ -3,6 +3,7 @@
 
 #include "arbrebinaire.h"
 
+
 arbre ArbreVide() {
 	arbre tree = NULL;
 	return tree;
@@ -11,6 +12,7 @@ arbre ArbreVide() {
 int EstArbreVide(arbre tree) {
 	return(tree == NULL);
 }
+
 
 element Racine(arbre tree) {
 	return tree->e;
@@ -81,7 +83,50 @@ arbre Insertion(element n, arbre tree) {
 
 
 int Recherche(element n, arbre tree) {
-	return 0;
+	if(EstArbreVide(tree)) {
+		return(0);
+	} else {
+		if (n == Racine(tree)) {
+			return(1);
+		} else if (n < Racine(tree)) {
+			Recherche(n,Gauche(tree));
+		} else {
+			Recherche(n,Droit(tree));
+		}
+	}
+}
+
+int Max(int a, int b) {
+	return(a>b) ? a : b;
+}
+
+int Hauteur(arbre tree){
+	if(!EstArbreVide(tree)) {
+		return(1+Max(Hauteur(Gauche(tree)),Hauteur(Droit(tree))));
+	} else {
+		return(0);
+	}
+
+}
+
+
+void Largeur(arbre tree, size_t niveau) {
+	if(!EstArbreVide(tree)) {
+		if(niveau == 1) {
+			printf("%d ",Racine(tree));
+		} else {
+			Largeur(Gauche(tree), niveau-1);
+			Largeur(Droit(tree), niveau-1);
+		}
+	}
+}
+
+
+void ParcoursLarg(arbre tree){
+	int h = Hauteur(tree);
+	for(size_t niv = 1; niv<=h; niv++) {
+		Largeur(tree,niv);
+	}
 }
 
 
