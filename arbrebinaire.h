@@ -19,6 +19,9 @@ void ParcoursPref(arbre tree);
 void ParcoursInf(arbre tree);
 void ParcoursSuff(arbre tree);
 arbre Insertion(element n, arbre tree);
+int Recherche(element n, arbre tree);
+void ParcoursLarg(arbre tree);
+int Max(int a, int b);
+int Hauteur(arbre tree);
+void Largeur(arbre tree, size_t niveau);
 #endif
-
-
